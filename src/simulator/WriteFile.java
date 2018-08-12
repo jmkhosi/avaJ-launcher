@@ -12,7 +12,7 @@ public class WriteFile {
 
     public WriteFile() {
         try{
-            fw = new FileWriter("simulation.txt");
+            fw = new FileWriter("Simulation.txt");
             bw = new BufferedWriter(fw);
         }
         catch (IOException e)
@@ -32,6 +32,7 @@ public class WriteFile {
     {
         try {
             bw.write(content);
+            bw.write('\n');
 
         } catch (IOException e) {
 

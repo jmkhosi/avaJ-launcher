@@ -22,11 +22,14 @@ public class WeatherProvider {
 	public String getCurrentWeather(Coordinates coordinates)
 	{
 
-		return randomiseWeather();
+		return randomiseWeather(coordinates);
 	}
 
-	private String randomiseWeather() {
-		Random random = new Random();
+	private String randomiseWeather(Coordinates coordinates) {
+		int seed = coordinates.getHeight() * coordinates.getLongitude() * coordinates.getLatitude();
+		Random random = new Random(Double.doubleToLongBits(Math.random() + seed));
+
+
 		int index = random.nextInt(4);
 		return weather[index];
 	}

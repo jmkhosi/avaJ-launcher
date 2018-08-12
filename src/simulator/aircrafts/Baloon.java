@@ -1,4 +1,7 @@
-import simulator.aircrafts.Coordinates;
+package simulator.aircrafts;
+
+import simulator.WeatherTower;
+import simulator.WriteFile;
 
 class Baloon extends Aircraft implements Flyable {
 
@@ -9,76 +12,74 @@ class Baloon extends Aircraft implements Flyable {
     }
 
 
+    //get the current weather from the weather provider
+    // w = WeatherProvider.getProvider.getCurrentWe(super.coordinates);
+    // change conditions according to the weather
+    // if w = SUN do what is required, if w = SNOW  do whatever. etc
+    // print result according to the weather
+    // if the height is 0 or less print landing message and unregister from towel
+    //message = "landing";
+    //Logger.getInstance().writeToFile(message);
+
     @Override
     public void updateConditions() {
+
         String weather = this._weatherTower.getWeather(this.coordinates);
 
-        switch(weather){
-
-            case SUN:
+        switch (weather) {
+            case "SUN":
 
                 this.coordinates.setLongitude(this.coordinates.getLongitude() + 2);
                 this.coordinates.setHeight(this.coordinates.getHeight() + 4);
-                if(this.coordinates.getHeight() > 100){
-                    this.coordinates.setHeight(100);
-                }
-                if(this.coordinates.getHeight() <= 0){
-
-                    //Write to file
-                }
+                WriteFile.getWriteFile().WriteToFile("Baloon#" + this.name + "(" + this.id + "): Shit man... It's so hot today");
                 break;
 
-            case RAIN:
+            case "RAIN":
 
                 this.coordinates.setHeight(this.coordinates.getHeight() - 5);
-                if(this.coordinates.getHeight() > 100){
-                    this.coordinates.setHeight(100);
-                }
-                if(this.coordinates.getHeight() <= 0){
-
-                    //Write to file
-                }
+                WriteFile.getWriteFile().WriteToFile("Baloon#" + this.name + "(" + this.id + "): It's raining. Better watch out for lighting.");
                 break;
 
-            case FOG:
+            case "FOG":
 
                 this.coordinates.setHeight(this.coordinates.getHeight() - 3);
-                if(this.coordinates.getHeight() > 100){
-                    this.coordinates.setHeight(100);
-                }
-                if(this.coordinates.getHeight() <= 0){
-
-                    //Write to file
-                }
+                WriteFile.getWriteFile().WriteToFile("Baloon#" + this.name + "(" + this.id + "): It's foggy today..I can't see");
                 break;
 
-            case SNOW:
+            case "SNOW":
 
                 this.coordinates.setHeight(this.coordinates.getHeight() - 15);
-                if(this.coordinates.getHeight() > 100){
-                    this.coordinates.setHeight(100);
-                }
-                if(this.coordinates.getHeight() <= 0){
-
-                    //Write to file
-                }
+                WriteFile.getWriteFile().WriteToFile("Baloon#" + this.name + "(" + this.id + "): My GOSH...It's freezing up here");
                 break;
 
+            default:
 
-            //get the current weather from the weather provider
-            // w = WeatherProvider.getProvider.getCurrentWe(super.coordinates);
-            // change conditions according to the weather
-            // if w = SUN do what is required, if w = SNOW  do whatever. etc
-            // print result according to the weather
-            // if the height is 0 or less print landing message and unregister from towel
-            //message = "landing";
-            //Logger.getInstance().writeToFile(message);
+                WriteFile.getWriteFile().WriteToFile("Baloon#" + this.name + "(" + this.id + "): NO WEATHER RESPONSE");
+
+
+
+
 
         }
+
+        if (this.coordinates.getHeight() == 0) {
+
+            WriteFile.getWriteFile().WriteToFile("Baloon#" + this.name + "(" + this.id + ")Landing.");
+            WriteFile.getWriteFile().WriteToFile("Baloon#" + this.name +"("+ this.id +")" + " Unregistered from Weather Tower.");
+
+        }
+
+
     }
+
 
     @Override
     public void registerTower(WeatherTower weatherTower) {
 
+        this._weatherTower = weatherTower;
+        WriteFile.getWriteFile().WriteToFile("Tower says:Baloon#" + this.name + "(" + this.id + ")" + " Registered to Weather Tower.");
+        _weatherTower.register(this);
+
+        //Write to file
     }
 }
